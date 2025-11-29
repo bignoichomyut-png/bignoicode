@@ -5,27 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BigNoi Chomyut Ai - Portfolio</title>
     
-    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS (Framework สำหรับจัดหน้าตาเว็บ) -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- LINE Seed Sans TH Font -->
+    <!-- LINE Seed Sans TH Font (ฟอนต์ภาษาไทยสวยๆ จาก LINE) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/line-seed-sans-th@1.0.0/index.css" />
     
-    <!-- Lucide Icons (Replacement for React Lucide) -->
+    <!-- Lucide Icons (ไอคอน) -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <script>
+        // ตั้งค่า Theme สีและฟอนต์ให้กับ Tailwind
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        theme: '#7AC9C1',
+                        theme: '#7AC9C1', // โค้ดสีหลักของคุณ
                     },
                     fontFamily: {
                         sans: ['LINE Seed Sans TH', 'sans-serif'],
                     },
                     animation: {
-                        blob: "blob 7s infinite",
+                        blob: "blob 7s infinite", // อนิเมชั่นพื้นหลัง
                     },
                     keyframes: {
                         blob: {
@@ -41,16 +42,16 @@
     </script>
 
     <style>
-        /* Hide scrollbar for Chrome, Safari and Opera */
+        /* ซ่อน Scrollbar แต่ยังเลื่อนได้ */
         .scrollbar-hide::-webkit-scrollbar {
             display: none;
         }
-        /* Hide scrollbar for IE, Edge and Firefox */
         .scrollbar-hide {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
         
+        /* การ์ดแก้วโปร่งแสง */
         .glass-card {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(20px);
@@ -58,55 +59,63 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
-        /* Carousel 3D Transitions */
+        /* ตั้งค่า 3D Perspective */
         .perspective-1000 {
-            perspective: 1000px; /* Creates the 3D space */
+            perspective: 1000px;
         }
 
+        /* สไตล์ของรูปใน Carousel (3D Cover Flow) */
         .carousel-item {
-            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother, modern easing */
+            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             margin: auto;
-            width: 300px; /* Base width */
-            height: 480px; /* Base height */
+            
+            /* ขนาดบนมือถือ (Responsive) */
+            width: 65vw; 
+            height: 55vh; 
+            
+            /* ขนาดสูงสุดบนจอคอม */
+            max-width: 300px; 
+            max-height: 480px;
+            
             transform-style: preserve-3d;
             backface-visibility: hidden;
+            will-change: transform, opacity;
         }
 
-        /* Important for touch handling */
         #swipe-container {
-            touch-action: pan-y;
+            touch-action: pan-y; /* ให้ปัดขึ้นลงได้ปกติ แต่ซ้ายขวาให้ JS จัดการ */
         }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 selection:bg-[#7AC9C1] selection:text-white overflow-x-hidden">
 
-    <!-- Navbar -->
+    <!-- Navbar (เมนู) -->
     <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 py-6">
         <div class="container mx-auto px-6 flex justify-between items-center">
             <div class="text-xl font-bold tracking-tight">
                 BigNoi<span class="text-theme">.Ai</span>
             </div>
-            <div class="hidden md:flex space-x-8">
+            <!-- เมนู Desktop -->
+            <div class="hidden md:flex space-x-6 lg:space-x-8">
                 <a href="#home" class="text-sm font-medium hover:text-theme transition-colors uppercase tracking-wide">หน้าหลัก</a>
                 <a href="#about" class="text-sm font-medium hover:text-theme transition-colors uppercase tracking-wide">ประวัติของฉัน</a>
                 <a href="#portfolio" class="text-sm font-medium hover:text-theme transition-colors uppercase tracking-wide">ผลงานของฉัน</a>
+                <a href="#posters" class="text-sm font-medium hover:text-theme transition-colors uppercase tracking-wide">โปสเตอร์</a>
+                <a href="#apps" class="text-sm font-medium hover:text-theme transition-colors uppercase tracking-wide">แอพพลิเคชั่น</a>
                 <a href="#contact" class="text-sm font-medium hover:text-theme transition-colors uppercase tracking-wide">ติดต่อฉัน</a>
             </div>
-            <!-- Mobile Menu Button (Simple) -->
+            <!-- ปุ่มเมนู Mobile (ไอคอน) -->
             <button class="md:hidden text-gray-800">
                 <i data-lucide="menu"></i>
             </button>
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Hero Section (ส่วนหัว) -->
     <section id="home" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
-        <!-- Background Blobs -->
+        <!-- พื้นหลัง Blob เคลื่อนไหว -->
         <div class="absolute top-[-20%] left-[-10%] w-[50vw] h-[50vw] rounded-full mix-blend-multiply filter blur-[80px] opacity-40 animate-blob bg-theme"></div>
         <div class="absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-cyan-200 mix-blend-multiply filter blur-[80px] opacity-40 animate-blob animation-delay-2000"></div>
         <div class="absolute bottom-[-20%] left-[20%] w-[50vw] h-[50vw] rounded-full bg-teal-100 mix-blend-multiply filter blur-[80px] opacity-40 animate-blob animation-delay-4000"></div>
@@ -127,11 +136,11 @@
         </div>
     </section>
 
-    <!-- About Section -->
+    <!-- About Section (ประวัติ) -->
     <section id="about" class="py-24 relative">
         <div class="container mx-auto px-6">
             <div class="max-w-5xl mx-auto glass-card rounded-[3rem] p-8 md:p-16 shadow-2xl relative overflow-hidden">
-                <!-- Decoration -->
+                <!-- ตกแต่งพื้นหลัง -->
                 <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-theme/20 to-transparent rounded-bl-[10rem]"></div>
                 
                 <div class="grid md:grid-cols-2 gap-12 items-center relative z-10">
@@ -157,22 +166,73 @@
         </div>
     </section>
 
-    <!-- Portfolio Images (3D Circular Carousel) -->
+    <!-- Portfolio Images (3D Cover Flow Carousel) -->
     <section id="portfolio" class="py-24 bg-gray-100 overflow-hidden">
         <div class="container mx-auto px-6 text-center mb-16">
             <h2 class="text-4xl font-bold mb-4">ผลงานรูปภาพ</h2>
             <p class="text-gray-500">ผลงานที่สร้างสรรค์ด้วย AI</p>
         </div>
 
-        <div id="swipe-container" class="relative h-[600px] flex items-center justify-center perspective-1000 w-full touch-pan-y">
-            <!-- Carousel Container -->
-            <div id="carousel-container" class="relative w-[300px] md:w-[350px] h-[550px] flex justify-center items-center pointer-events-none transform-style-3d">
-                <!-- Items will be injected here by JS -->
+        <div id="swipe-container" class="relative h-[70vh] md:h-[600px] flex items-center justify-center perspective-1000 w-full touch-pan-y">
+            
+            <!-- ปุ่มลูกศร (แสดงเฉพาะจอคอม) -->
+            <button id="prevBtn" class="absolute left-4 md:left-10 lg:left-20 z-50 p-3 md:p-4 rounded-full bg-white/80 hover:bg-white shadow-lg text-theme transition-all duration-300 hover:scale-110 hidden md:flex items-center justify-center backdrop-blur-sm border border-white">
+                <i data-lucide="chevron-left" class="w-8 h-8"></i>
+            </button>
+            <button id="nextBtn" class="absolute right-4 md:right-10 lg:right-20 z-50 p-3 md:p-4 rounded-full bg-white/80 hover:bg-white shadow-lg text-theme transition-all duration-300 hover:scale-110 hidden md:flex items-center justify-center backdrop-blur-sm border border-white">
+                <i data-lucide="chevron-right" class="w-8 h-8"></i>
+            </button>
+
+            <!-- ที่ใส่รูปภาพ Carousel -->
+            <div id="carousel-container" class="relative w-full h-full flex justify-center items-center pointer-events-none transform-style-3d">
+                <!-- รูปภาพจะถูกสร้างด้วย JavaScript -->
             </div>
         </div>
     </section>
 
-    <!-- Portfolio Videos (Grid) -->
+    <!-- Poster Gallery (แนวนอน) -->
+    <section id="posters" class="py-24 bg-white relative">
+        <div class="container mx-auto px-6 mb-12 flex justify-between items-end">
+            <div>
+                <h2 class="text-4xl font-bold mb-4">ผลงานภาพโปสเตอร์ AI</h2>
+                <p class="text-gray-500">แกลเลอรี่ภาพสวยงาม (ปัดเลื่อนเพื่อรับชม)</p>
+            </div>
+            <div class="hidden md:flex gap-2 text-gray-400">
+                <i data-lucide="arrow-left"></i>
+                <i data-lucide="mouse-pointer-2"></i>
+                <i data-lucide="arrow-right"></i>
+            </div>
+        </div>
+        
+        <!-- แถบเลื่อนแนวนอน -->
+        <div class="w-full overflow-x-auto pb-12 scrollbar-hide snap-x snap-mandatory px-6 md:px-0">
+            <div class="container mx-auto">
+                <div class="flex gap-6 w-max" id="poster-container">
+                    <!-- โปสเตอร์จะถูกสร้างด้วย JavaScript -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- App Design Portfolio (ใหม่!) -->
+    <section id="apps" class="py-24 bg-gray-50 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-white to-gray-50"></div>
+        <div class="absolute right-[-10%] top-[20%] w-[30vw] h-[30vw] rounded-full bg-theme/5 blur-[100px]"></div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">ผลงานการออกแบบแอพพลิเคชั่น</h2>
+                <p class="text-gray-500">UI/UX Design & Prototypes</p>
+            </div>
+
+            <!-- Grid แสดงแอพ -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" id="app-container">
+                <!-- แอพจะถูกสร้างด้วย JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Videos (วิดีโอ) -->
     <section class="py-24 bg-white relative">
         <div class="container mx-auto px-6 mb-12">
             <h2 class="text-4xl font-bold mb-4">ผลงานวิดีโอ</h2>
@@ -181,16 +241,16 @@
         
         <div class="container mx-auto px-6 pb-12">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 justify-items-center" id="video-container">
-                <!-- Videos will be injected here by JS -->
+                <!-- วิดีโอจะถูกสร้างด้วย JavaScript -->
             </div>
         </div>
     </section>
 
-    <!-- Contact Section -->
+    <!-- Contact Section (ติดต่อ) -->
     <section id="contact" class="py-24 bg-gray-50">
         <div class="container mx-auto px-6">
             <div class="max-w-4xl mx-auto bg-gradient-to-br from-theme to-cyan-600 rounded-[3rem] p-8 md:p-12 text-center text-white shadow-2xl relative overflow-hidden">
-                <!-- Circles -->
+                <!-- วงกลมตกแต่ง -->
                 <div class="absolute top-[-50px] left-[-50px] w-40 h-40 bg-white/20 rounded-full blur-2xl"></div>
                 <div class="absolute bottom-[-50px] right-[-50px] w-60 h-60 bg-white/20 rounded-full blur-3xl"></div>
 
@@ -200,7 +260,7 @@
                 </p>
 
                 <div class="grid md:grid-cols-2 gap-8 items-start relative z-10">
-                    <!-- Info -->
+                    <!-- ข้อมูลติดต่อ -->
                     <div class="text-left space-y-6 bg-white/10 p-6 rounded-2xl backdrop-blur-sm">
                         <h3 class="text-2xl font-semibold mb-4 border-b border-white/20 pb-2">ช่องทางการติดต่อ</h3>
                         
@@ -227,7 +287,7 @@
                         </div>
                     </div>
 
-                    <!-- Form -->
+                    <!-- แบบฟอร์มติดต่อ -->
                     <form onsubmit="handleContact(event)" class="bg-white p-6 rounded-2xl text-gray-800 shadow-xl">
                         <h3 class="text-xl font-bold mb-4 text-theme">สนใจร่วมงาน / สอบถาม</h3>
                         <div class="space-y-4">
@@ -256,7 +316,7 @@
         © 2023 BigNoi Chomyut Ai. All Rights Reserved.
     </footer>
 
-    <!-- Lightbox Modal -->
+    <!-- Lightbox Modal (ดูรูปขยายใหญ่) -->
     <div id="lightbox" class="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
         <button onclick="closeLightbox()" class="absolute top-6 right-6 text-white/70 hover:text-white hover:bg-white/10 p-2 rounded-full transition-all">
             <i data-lucide="x" class="w-10 h-10"></i>
@@ -267,9 +327,9 @@
         </div>
     </div>
 
-    <!-- JavaScript Logic -->
+    <!-- JavaScript Scripts -->
     <script>
-        // --- Data ---
+        // --- Data: รูปภาพผลงาน AI ---
         const images = [
             { id: 1, src: "https://scontent.fbkk6-2.fna.fbcdn.net/v/t39.30808-6/545996410_1326762802189805_5455500156719126992_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_ohc=hYEogIAB5tMQ7kNvwFVNfHH&_nc_oc=Adlj2YXEcH3u_eqpZ6dMYlZ_QU3Yo4keCJGYGJZkNJGj2MwqQEh_DruRpQbOeXy_0JA&_nc_zt=23&_nc_ht=scontent.fbkk6-2.fna&_nc_gid=ifb3VBsgxEE3kGwZKVx0dA&oh=00_AfiF6YQyYA4-V8pn3Qtn9NOBC8ikaIea6iHSumZDuE7Pjg&oe=693078A5", title: "AI Art Collection 1" },
             { id: 2, src: "https://scontent.fbkk6-1.fna.fbcdn.net/v/t39.30808-6/545935605_1326764555522963_5359120233033833023_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_ohc=e2NluB1DbgAQ7kNvwFVAa3t&_nc_oc=Adk4Fb37K1joNWmxa05MaV1uh-HnNt3hobfATobmHdsJTOGcbLFuM6ygzzZVUSBGrFM&_nc_zt=23&_nc_ht=scontent.fbkk6-1.fna&_nc_gid=sBNezMRidVt9GV4GmfaHNw&oh=00_Afgsnv363Jw25usmAzcz4pzfmETTGJwsgAfImWcI453H0g&oe=69307404", title: "AI Art Collection 2" },
@@ -277,6 +337,26 @@
             { id: 4, src: "https://scontent.fbkk6-1.fna.fbcdn.net/v/t39.30808-6/547197414_1326764598856292_176605910412490261_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=833d8c&_nc_ohc=w6JIM72xJLYQ7kNvwFWYHP0&_nc_oc=Adn_X9K6hMVG0nn39mtfP820lX4_e-5kS9VDZ9z5f--Q2kLv3br4wVoDMAR3qGxuGJI&_nc_zt=23&_nc_ht=scontent.fbkk6-1.fna&_nc_gid=2MsomFG8F-YiOcK_yzIUjg&oh=00_AfiChEOc3B_HxGWIKZ4HFNrMcar-F-Q0h-XEH54u0MfhNw&oe=693080C6", title: "AI Art Collection 4" },
             { id: 5, src: "https://scontent.fbkk6-2.fna.fbcdn.net/v/t39.30808-6/543451135_1323772825822136_4659397363789577933_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_ohc=iTumLN2llpMQ7kNvwHJ0cd5&_nc_oc=AdkXXYMdbO1Us-DQ9V0zptp0pBXQvEQeqAUBe3fJFcDPshtGSOYeO0mUYf4xHvU_-xk&_nc_zt=23&_nc_ht=scontent.fbkk6-2.fna&_nc_gid=EWTmm_lQdEj8QhSsRKyE1Q&oh=00_AfgbCcR_UljsfuVh2BlM2S89xfIoSg5I7MEvvWG1Hj7wrQ&oe=69306E5C", title: "AI Art Collection 5" },
             { id: 6, src: "https://scontent.fbkk6-2.fna.fbcdn.net/v/t39.30808-6/544592840_1323772795822139_5701235931445609935_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_ohc=U1EPgXBou5IQ7kNvwH_Xw1x&_nc_oc=AdmkBzDeKn8zllAcwJaFzRolQwqDUVafYHFQyowY1DPb7FxyTJ4bHrC4UUlTr0lcR5o&_nc_zt=23&_nc_ht=scontent.fbkk6-2.fna&_nc_gid=lQY-zF_S1-Mi0vTglDTqeA&oh=00_AfgOD06B7itjPjSROgzH_Ik9CgOUeezhQlymIcoCf86zyQ&oe=69307576", title: "AI Art Collection 6" },
+        ];
+
+        // --- Data: โปสเตอร์ ---
+        const posters = [
+            { id: 1, src: "https://scontent.fbkk6-2.fna.fbcdn.net/v/t39.30808-6/583336566_1389639939235424_238076757449283376_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_ohc=KBLnO6cVWwgQ7kNvwFa1ZZU&_nc_oc=Adn5zFaf8cw3eg1vO4h-bjBH5y4IBwj6wDTR7Q_fJYP-7KPUAphoFZhqnf7Bmrj8ok4&_nc_zt=23&_nc_ht=scontent.fbkk6-2.fna&_nc_gid=pD8YRBhx_lbU-_RStoUPXQ&oh=00_Afgp-Ld6yNSzaRAF73jEaOMisNo-atONr7vbZ_0RCaH7lg&oe=69309DBC", title: "AI Poster 1" },
+            { id: 2, src: "https://scontent.fbkk6-2.fna.fbcdn.net/v/t39.30808-6/587032463_1389685792564172_8073123708143137417_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_ohc=5eNHzeWSq1UQ7kNvwHyhVex&_nc_oc=AdmRx6HsnA_usMY2eyJrHokQCDh3r6utDBymhHE_yCTkkHluAWxjU3rxK_LXpbq7a5Q&_nc_zt=23&_nc_ht=scontent.fbkk6-2.fna&_nc_gid=GMHDeiK9VsS0tHU_81LVRw&oh=00_AfhKViBYFjmve7tlPgitYT2kOTfa7YJR1bdvTrnl9RaNhQ&oe=6930B689", title: "AI Poster 2" },
+            { id: 3, src: "https://scontent.fbkk6-1.fna.fbcdn.net/v/t39.30808-6/587092028_1389725222560229_2969562925741720967_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_ohc=pzlSQK-aAaMQ7kNvwHBNmLa&_nc_oc=AdlrqveF4HGaTcjpKtTtSAD-l15h_JdQOPS5QeMKLmd7iO5mVDGl0svcycB9-TsZMiU&_nc_zt=23&_nc_ht=scontent.fbkk6-1.fna&_nc_gid=ObUS-uKIBOtbueF4goiUcA&oh=00_AfikJdU_-IbpA3NMCOOjOjcWuu90p14iBc0PtL7QGi0r1Q&oe=693093F3", title: "AI Poster 3" },
+            { id: 4, src: "https://scontent.fbkk6-2.fna.fbcdn.net/v/t39.30808-6/588933316_1389777802554971_888643963657237106_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_ohc=quqQGiwaJbQQ7kNvwGjYjAX&_nc_oc=Adk1Agf88NJ8j_EZfcPWlMXFoPNo3SCmHFHzIWxGiTP9ZKwn-t_Pa5s69omIyhwH9pc&_nc_zt=23&_nc_ht=scontent.fbkk6-2.fna&_nc_gid=RH_3LHYaL0Fe22JDvjWtAw&oh=00_AfiRm9B0ltRaHmadi8349zl8N34yD7SeoFAcikA5j2wc8Q&oe=69308E2C", title: "AI Poster 4" },
+            { id: 5, src: "https://scontent.fbkk6-2.fna.fbcdn.net/v/t39.30808-6/589014678_1389802295885855_692633134816905724_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_ohc=51ucXEL-L-wQ7kNvwGsbZCK&_nc_oc=AdkaIPLEjbxxyqy8nEPuUXnK-MIoVkyNdynfX13_LD7_WPYjG0ElCn8nV_evVYrNYdM&_nc_zt=23&_nc_ht=scontent.fbkk6-2.fna&_nc_gid=PlHaOYlnrds24pOwOLAKEg&oh=00_Afgtv6HkeLSw-dlyqUFek7MPaXJqG75IE8LNs-xHygBx-Q&oe=6930B84F", title: "AI Poster 5" },
+            { id: 6, src: "https://scontent.fbkk6-1.fna.fbcdn.net/v/t39.30808-6/585888932_1388425016023583_3443907623242275343_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=833d8c&_nc_ohc=fANdCrq3axsQ7kNvwHorchz&_nc_oc=Adkm3O01mx_4zdKQvHIfMQpEutxUVs62oeSq_I3WtJWj9lbntLukb27pCROdN0tUzR4&_nc_zt=23&_nc_ht=scontent.fbkk6-1.fna&_nc_gid=ijQyLXAF5Kl7aLvwxnpo1A&oh=00_AfivjQz0j5BXiwZdj8ohbjbhnryx9M_Jyd7BFGQODpRRPw&oe=6930AE7E", title: "AI Poster 6" },
+            { id: 7, src: "https://scontent.fbkk6-1.fna.fbcdn.net/v/t39.30808-6/582625594_1388425042690247_3301871458965173340_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_ohc=P78cSdQp6FUQ7kNvwHAomWS&_nc_oc=AdkTkvlUR8eSFuKF8cJ5g6wHkwy7uv7fFNrdXlqE0pWUdySeMu4y3dw6sTdQA1_e70g&_nc_zt=23&_nc_ht=scontent.fbkk6-1.fna&_nc_gid=MYiOvudH2aucZFMU5f48ew&oh=00_AfgpizCw1n_Ist4ng-mdJhp0HNCSDvjrCcaQ28LHBJfPnA&oe=69308F0D", title: "AI Poster 7" },
+            { id: 8, src: "https://scontent.fbkk6-2.fna.fbcdn.net/v/t39.30808-6/585900692_1388425019356916_3801907677961093657_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_ohc=qoCwmVsLvEoQ7kNvwFsgxKG&_nc_oc=AdmEaiFHBwWwsnEHQqOvnzc2PmgzAuZq4Zct7EyVEtfqsdBo7AHmwAWwN2gt04XbSMw&_nc_zt=23&_nc_ht=scontent.fbkk6-2.fna&_nc_gid=h5ls3jAJoiJWPe22uo8Uyg&oh=00_AfgMGLyw1ZRn1v4P8J0xD_A9rYz5Maiwwe1dokCghoCGiA&oe=6930BD24", title: "AI Poster 8" },
+        ];
+
+        // --- Data: แอพพลิเคชั่น (BIGBOT Student) ---
+        const apps = [
+            { id: 1, src: "https://scontent.fbkk6-2.fna.fbcdn.net/v/t39.30808-6/588142211_1388173956048689_1893418692383240444_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_ohc=08YujoIXpMEQ7kNvwHMXcGb&_nc_oc=Admq6vvQ_DZvLjHaEIPq2Kec_2__nvZPxBukmpiKV9l0Jiyf7L6efjdVMgor6Kq3nY8&_nc_zt=23&_nc_ht=scontent.fbkk6-2.fna&_nc_gid=_HHhy0UcG-UCVesPGSlY6Q&oh=00_AfiQNeRFtOPpRUKtgZcbqqG5_li_3VEY3J8v9lbDMYLIBQ&oe=693090DE", title: "BIGBOT Student", desc: "Mobile Application" },
+            { id: 2, src: "https://scontent.fbkk6-1.fna.fbcdn.net/v/t39.30808-6/586935983_1388173972715354_7111275988011867127_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_ohc=ZKzSIvBkkYgQ7kNvwFoEHnw&_nc_oc=Adk63RTTGUBXVOp0ctyQYzQupldEygmuTmtBh-r7237kN6sFoKKQRZX8gSkm5ZpaJjA&_nc_zt=23&_nc_ht=scontent.fbkk6-1.fna&_nc_gid=R0Qr0JbLLdKm1VPYJ2s9fw&oh=00_AfjEHQfbu72jK4K8iomV0g7az-fASZYreOgk4Vop0oXtrw&oe=6930A679", title: "BIGBOT Student", desc: "Mobile Application" },
+            { id: 3, src: "https://scontent.fbkk6-1.fna.fbcdn.net/v/t39.30808-6/586561214_1388174022715349_7859331335026149256_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_ohc=lW7rMxDIWZ4Q7kNvwGUG2MN&_nc_oc=AdltF_jACRyPbnXJ9LSZXIknv2NWdCnHpShPe_w6UjRWRsIn4zORK6ArmbH7gOngTC0&_nc_zt=23&_nc_ht=scontent.fbkk6-1.fna&_nc_gid=IL7hDsxYDImjhKSelIR1aA&oh=00_AfjniJdoXFZtYHlbCGUml8uM91V-L_GeN3ro0ZewVQZuZg&oe=693091C9", title: "BIGBOT Student", desc: "Mobile Application" },
+            { id: 4, src: "https://scontent.fbkk6-1.fna.fbcdn.net/v/t39.30808-6/586935983_1388173972715354_7111275988011867127_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_ohc=ZKzSIvBkkYgQ7kNvwFoEHnw&_nc_oc=Adk63RTTGUBXVOp0ctyQYzQupldEygmuTmtBh-r7237kN6sFoKKQRZX8gSkm5ZpaJjA&_nc_zt=23&_nc_ht=scontent.fbkk6-1.fna&_nc_gid=R0Qr0JbLLdKm1VPYJ2s9fw&oh=00_AfjEHQfbu72jK4K8iomV0g7az-fASZYreOgk4Vop0oXtrw&oe=6930A679", title: "BIGBOT Student", desc: "Mobile Application" },
         ];
 
         const videos = [
@@ -305,22 +385,19 @@
             }
         });
 
-        // --- 3D Circular Carousel Logic ---
+        // --- 3D Circular Carousel Logic (Cover Flow Style) ---
         let currentIndex = 0;
         const container = document.getElementById('carousel-container');
 
         function renderCarousel() {
-            container.innerHTML = ''; // Clear existing
+            container.innerHTML = '';
             const len = images.length;
             
             images.forEach((img, index) => {
-                // Calculate circular distance (Signed distance)
-                // -2, -1, 0, 1, 2, ...
                 let diff = (index - currentIndex) % len;
                 if (diff > len / 2) diff -= len;
                 if (diff < -len / 2) diff += len;
 
-                // Base Styles
                 let className = "carousel-item bg-white rounded-2xl overflow-hidden group pointer-events-auto ";
                 let transform = "";
                 let opacity = 1;
@@ -329,34 +406,28 @@
                 let isActive = false;
 
                 if (diff === 0) {
-                    // Active Item (Center)
-                    transform = `translateX(0) translateZ(0) rotateY(0)`;
+                    transform = `translateX(0) translateZ(0) rotateY(0) scale(1)`;
                     opacity = 1;
                     zIndex = 100;
                     boxShadow = `0 20px 40px -15px rgba(0,0,0,0.3), 0 0 20px 2px ${themeColor}`;
                     className += "cursor-pointer";
                     isActive = true;
                 } else {
-                    // Background Items (3D Effect)
-                    // The further away, the smaller (scale via translateZ), more rotated, and faded
                     const absDiff = Math.abs(diff);
                     const direction = diff > 0 ? 1 : -1;
-                    
-                    // Spacing
-                    const xOffset = direction * (50 + (absDiff * 10)) + '%'; // e.g. 60%, 70%
-                    const zOffset = -100 * absDiff + 'px'; // Move back
-                    const rotateY = direction * -15 * absDiff + 'deg'; // Rotate inwards
-                    
-                    transform = `translateX(${xOffset}) translateZ(${zOffset}) rotateY(${rotateY})`;
-                    opacity = Math.max(0, 1 - absDiff * 0.3); // Fade out based on distance
+                    const rotateY = direction * -45 + 'deg'; 
+                    const xOffset = (direction * 60) + (direction * (absDiff - 1) * 20) + '%';
+                    const zOffset = -100 * absDiff + 'px';
+                    const scale = Math.max(0.6, 1 - (absDiff * 0.15));
+
+                    transform = `translateX(${xOffset}) translateZ(${zOffset}) rotateY(${rotateY}) scale(${scale})`;
+                    opacity = Math.max(0, 1 - absDiff * 0.2); 
                     zIndex = 50 - absDiff;
                     boxShadow = `0 10px 20px -10px rgba(0,0,0,0.2)`;
                 }
 
-                // Optimization: Don't render if too far back/invisible
                 if (opacity <= 0) return;
 
-                // Create Element
                 const div = document.createElement('div');
                 div.className = className;
                 div.style.transform = transform;
@@ -381,14 +452,25 @@
             });
         }
 
-        // --- Touch Swipe Logic (Improved) ---
+        // --- Button Listeners ---
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            renderCarousel();
+        });
+        
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % images.length;
+            renderCarousel();
+        });
+
+        // --- Touch Swipe Logic ---
         let touchStartX = 0;
         let touchEndX = 0;
-        const swipeThreshold = 50; // Minimum distance required for a swipe
+        const swipeThreshold = 50; 
         const swipeContainer = document.getElementById('swipe-container');
 
         swipeContainer.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].clientX; // Use clientX for improved reliability
+            touchStartX = e.changedTouches[0].clientX;
         }, { passive: true });
 
         swipeContainer.addEventListener('touchend', (e) => {
@@ -401,19 +483,60 @@
             
             if (Math.abs(distance) > swipeThreshold) {
                 if (distance < 0) {
-                    // Swipe Left -> Next Image
+                    // Swipe Left -> Next
                     currentIndex = (currentIndex + 1) % images.length;
                     renderCarousel();
                 } else {
-                    // Swipe Right -> Previous Image
+                    // Swipe Right -> Prev
                     currentIndex = (currentIndex - 1 + images.length) % images.length;
                     renderCarousel();
                 }
             }
         }
 
-        // Initial Render
         renderCarousel();
+
+        // --- Poster Logic (Horizontal Scroll) ---
+        const posterContainer = document.getElementById('poster-container');
+        posters.forEach(poster => {
+            const div = document.createElement('div');
+            div.className = "snap-center shrink-0 w-[260px] md:w-[300px] h-[400px] md:h-[450px] bg-white rounded-2xl shadow-md overflow-hidden group relative cursor-pointer transition-all duration-300 hover:shadow-2xl hover:-translate-y-2";
+            div.onclick = () => openLightbox(poster);
+            div.innerHTML = `
+                <img src="${poster.src}" alt="${poster.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                    <h3 class="text-white text-xl font-bold translate-y-4 group-hover:translate-y-0 transition-transform duration-300">${poster.title}</h3>
+                    <span class="text-theme text-sm font-medium">AI Poster Art</span>
+                </div>
+            `;
+            posterContainer.appendChild(div);
+        });
+
+        // --- App Logic (Grid) ---
+        const appContainer = document.getElementById('app-container');
+        apps.forEach(app => {
+            const div = document.createElement('div');
+            div.className = "group relative bg-white rounded-3xl shadow-xl overflow-hidden cursor-pointer hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-gray-100";
+            div.onclick = () => openLightbox(app);
+            div.innerHTML = `
+                <!-- Phone Frame Aspect Ratio -->
+                <div class="aspect-[9/16] w-full relative overflow-hidden bg-gray-100">
+                    <img src="${app.src}" alt="${app.title}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <div class="w-12 h-12 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white">
+                            <i data-lucide="maximize-2" class="w-6 h-6"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-6 text-center">
+                    <h3 class="text-lg font-bold text-gray-800 mb-1">${app.title}</h3>
+                    <p class="text-sm text-theme font-medium">${app.desc}</p>
+                </div>
+            `;
+            appContainer.appendChild(div);
+        });
 
         // --- Video Logic ---
         const videoContainer = document.getElementById('video-container');
@@ -458,7 +581,6 @@
             lightbox.classList.add('opacity-0', 'pointer-events-none');
         }
         
-        // Close on background click
         lightbox.addEventListener('click', (e) => {
             if(e.target === lightbox) closeLightbox();
         });
