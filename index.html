@@ -135,7 +135,7 @@
                             <span class="w-8 h-8 rounded-full bg-theme flex items-center justify-center text-white text-sm">01</span>
                             ประวัติของฉัน
                         </h2>
-                        <p class="text-gray-600 leading-loose mb-6">
+                        <p class="text-gray-600 leading-loose mb-5">
                             สวัสดีครับ ผม BigNoi Chomyut Ai เชี่ยวชาญในการสั่งงาน AI เพื่อสร้างสรรค์ผลงานศิลปะและโซลูชันทางธุรกิจ ผมหลงใหลในการผสมผสานระหว่างเทคโนโลยีและศิลปะ (Tech & Art) เพื่อก้าวข้ามขีดจำกัดเดิมๆ
                         </p>
                     </div>
@@ -161,13 +161,7 @@
 
         <!-- Added id="swipe-container" here to catch swipes on the entire area -->
         <div id="swipe-container" class="relative h-[600px] flex items-center justify-center perspective-1000 w-full touch-pan-y">
-            <!-- Nav Buttons -->
-            <button id="prevBtn" class="absolute left-4 md:left-20 z-30 p-4 rounded-full bg-white shadow-lg hover:scale-110 transition-transform text-gray-600 hover:text-theme">
-                <i data-lucide="chevron-left" class="w-8 h-8"></i>
-            </button>
-            <button id="nextBtn" class="absolute right-4 md:right-20 z-30 p-4 rounded-full bg-white shadow-lg hover:scale-110 transition-transform text-gray-600 hover:text-theme">
-                <i data-lucide="chevron-right" class="w-8 h-8"></i>
-            </button>
+            <!-- Nav Buttons Removed -->
 
             <!-- Carousel Container -->
             <div id="carousel-container" class="relative w-[300px] md:w-[350px] h-[550px] flex justify-center items-center pointer-events-none">
@@ -180,7 +174,7 @@
     <section class="py-24 bg-white relative">
         <div class="container mx-auto px-6 mb-12">
             <h2 class="text-4xl font-bold mb-4">ผลงานวิดีโอ</h2>
-            <p class="text-gray-500">รวมผลงานวิดีโอ (iPad Grid)</p>
+            <p class="text-gray-500">รวมผลงานวิดีโอ</p>
         </div>
         
         <div class="container mx-auto px-6 pb-12">
@@ -371,16 +365,6 @@
                 container.appendChild(div);
             });
         }
-
-        document.getElementById('prevBtn').addEventListener('click', () => {
-            currentIndex = (currentIndex - 1 + images.length) % images.length;
-            renderCarousel();
-        });
-        
-        document.getElementById('nextBtn').addEventListener('click', () => {
-            currentIndex = (currentIndex + 1) % images.length;
-            renderCarousel();
-        });
 
         // --- Touch Swipe Logic (Improved) ---
         let touchStartX = 0;
