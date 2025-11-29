@@ -66,18 +66,19 @@
 
         /* สไตล์ของรูปใน Carousel (3D Cover Flow) */
         .carousel-item {
-            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+            /* ปรับความเร็ว transition ให้ลื่นขึ้นบนมือถือ (0.5s) */
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
             margin: auto;
             
             /* ขนาดบนมือถือ (Responsive) */
-            width: 65vw; 
+            width: 70vw; /* เพิ่มความกว้างให้เห็นชัดขึ้นบนมือถือ */
             height: 55vh; 
             
             /* ขนาดสูงสุดบนจอคอม */
-            max-width: 300px; 
-            max-height: 480px;
+            max-width: 320px; 
+            max-height: 500px;
             
             transform-style: preserve-3d;
             backface-visibility: hidden;
@@ -86,6 +87,10 @@
 
         #swipe-container {
             touch-action: pan-y; /* ให้ปัดขึ้นลงได้ปกติ แต่ซ้ายขวาให้ JS จัดการ */
+            cursor: grab;
+        }
+        #swipe-container:active {
+            cursor: grabbing;
         }
     </style>
 </head>
@@ -124,10 +129,11 @@
             <div class="mb-6 inline-block px-4 py-1.5 rounded-full bg-white/50 backdrop-blur-sm border border-white shadow-sm">
                 <span class="text-sm font-semibold tracking-wider text-gray-500 uppercase">Welcome to Portfolio</span>
             </div>
-            <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight text-gray-900">
-                BigNoi <span class="text-transparent bg-clip-text bg-gradient-to-r from-theme to-cyan-500">Chomyut Ai</span>
+            <!-- ปรับขนาดฟอนต์ให้พอดีกับมือถือ (text-4xl) และใหญ่ขึ้นตามขนาดจอ (sm:text-5xl, md:text-7xl) -->
+            <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold mb-6 tracking-tight text-gray-900 leading-tight">
+                BigNoi <span class="text-transparent bg-clip-text bg-gradient-to-r from-theme to-cyan-500 block sm:inline">Chomyut Ai</span>
             </h1>
-            <p class="text-xl md:text-2xl text-gray-500 font-light mb-10 max-w-2xl mx-auto leading-relaxed">
+            <p class="text-lg md:text-2xl text-gray-500 font-light mb-10 max-w-2xl mx-auto leading-relaxed">
                 ปรมาจารย์ด้าน <strong class="font-semibold text-gray-800">Prompt Engineer</strong> ผู้สร้างสรรค์จินตนาการให้กลายเป็นความจริงด้วยพลังแห่ง AI
             </p>
             <a href="#portfolio" class="inline-block px-8 py-3 rounded-full bg-black text-white font-medium hover:bg-theme hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-theme/50">
@@ -188,6 +194,9 @@
                 <!-- รูปภาพจะถูกสร้างด้วย JavaScript -->
             </div>
         </div>
+        <div class="text-center text-gray-400 text-sm mt-4 md:hidden">
+            <i data-lucide="hand-metal" class="inline w-4 h-4 mr-1"></i> ปัดซ้าย-ขวา เพื่อหมุนดูรูปภาพ
+        </div>
     </section>
 
     <!-- Poster Gallery (แนวนอน) -->
@@ -208,13 +217,13 @@
         <div class="w-full overflow-x-auto pb-12 scrollbar-hide snap-x snap-mandatory px-6 md:px-0">
             <div class="container mx-auto">
                 <div class="flex gap-6 w-max" id="poster-container">
-                    <!-- โปสเตอร์จะถูกสร้างด้วย JavaScript -->
+                    <!-- โปสเตอร์จะถูกสร้างด้วย JavaScript (พร้อมไฟนีออนวิ่งตลอดเวลา) -->
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- App Design Portfolio (ใหม่!) -->
+    <!-- App Design Portfolio -->
     <section id="apps" class="py-24 bg-gray-50 relative overflow-hidden">
         <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-white to-gray-50"></div>
         <div class="absolute right-[-10%] top-[20%] w-[30vw] h-[30vw] rounded-full bg-theme/5 blur-[100px]"></div>
@@ -466,7 +475,7 @@
         // --- Touch Swipe Logic ---
         let touchStartX = 0;
         let touchEndX = 0;
-        const swipeThreshold = 50; 
+        const swipeThreshold = 30; // ลด Threshold ลงเพื่อให้ปัดง่ายขึ้น (30px)
         const swipeContainer = document.getElementById('swipe-container');
 
         swipeContainer.addEventListener('touchstart', (e) => {
@@ -496,17 +505,25 @@
 
         renderCarousel();
 
-        // --- Poster Logic (Horizontal Scroll) ---
+        // --- Poster Logic (Horizontal Scroll with NEON RUNNING LIGHT) ---
         const posterContainer = document.getElementById('poster-container');
         posters.forEach(poster => {
             const div = document.createElement('div');
-            div.className = "snap-center shrink-0 w-[260px] md:w-[300px] h-[400px] md:h-[450px] bg-white rounded-2xl shadow-md overflow-hidden group relative cursor-pointer transition-all duration-300 hover:shadow-2xl hover:-translate-y-2";
+            // Modified classes: added 'bg-gray-900' for dark backdrop behind neon
+            div.className = "snap-center shrink-0 w-[260px] md:w-[300px] h-[400px] md:h-[450px] bg-gray-900 rounded-2xl shadow-md overflow-hidden group relative cursor-pointer transition-all duration-300 hover:shadow-2xl hover:-translate-y-2";
             div.onclick = () => openLightbox(poster);
             div.innerHTML = `
-                <img src="${poster.src}" alt="${poster.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                    <h3 class="text-white text-xl font-bold translate-y-4 group-hover:translate-y-0 transition-transform duration-300">${poster.title}</h3>
-                    <span class="text-theme text-sm font-medium">AI Poster Art</span>
+                <!-- Rotating Neon Glow (Always visible now) -->
+                <!-- Uses conic gradient and spin animation -->
+                <div class="absolute top-[-50%] left-[-50%] w-[200%] h-[200%] bg-[conic-gradient(transparent_20%,#FFFF00_40%,transparent_60%)] animate-[spin_4s_linear_infinite] opacity-100"></div>
+                
+                <!-- Inner Content Container (Masks the center of the glow to create border effect) -->
+                <div class="absolute inset-[3px] bg-white rounded-[13px] overflow-hidden">
+                    <img src="${poster.src}" alt="${poster.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <h3 class="text-white text-xl font-bold translate-y-4 group-hover:translate-y-0 transition-transform duration-300">${poster.title}</h3>
+                        <span class="text-theme text-sm font-medium">AI Poster Art</span>
+                    </div>
                 </div>
             `;
             posterContainer.appendChild(div);
