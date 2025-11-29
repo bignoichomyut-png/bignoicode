@@ -22,7 +22,6 @@
                         theme: '#7AC9C1',
                     },
                     fontFamily: {
-                        // Updated to LINE Seed Sans TH
                         sans: ['LINE Seed Sans TH', 'sans-serif'],
                     },
                     animation: {
@@ -59,22 +58,28 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
-        /* Carousel Transitions */
+        /* Carousel 3D Transitions */
+        .perspective-1000 {
+            perspective: 1000px; /* Creates the 3D space */
+        }
+
         .carousel-item {
-            transition: all 0.7s ease-out;
+            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother, modern easing */
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
             margin: auto;
-            width: 320px;
-            height: 500px;
+            width: 300px; /* Base width */
+            height: 480px; /* Base height */
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
         }
 
         /* Important for touch handling */
         #swipe-container {
-            touch-action: pan-y; /* Allow vertical scroll, but let JS handle horizontal */
+            touch-action: pan-y;
         }
     </style>
 </head>
@@ -152,20 +157,17 @@
         </div>
     </section>
 
-    <!-- Portfolio Images (Carousel) -->
+    <!-- Portfolio Images (3D Circular Carousel) -->
     <section id="portfolio" class="py-24 bg-gray-100 overflow-hidden">
         <div class="container mx-auto px-6 text-center mb-16">
             <h2 class="text-4xl font-bold mb-4">ผลงานรูปภาพ</h2>
             <p class="text-gray-500">ผลงานที่สร้างสรรค์ด้วย AI</p>
         </div>
 
-        <!-- Added id="swipe-container" here to catch swipes on the entire area -->
         <div id="swipe-container" class="relative h-[600px] flex items-center justify-center perspective-1000 w-full touch-pan-y">
-            <!-- Nav Buttons Removed -->
-
             <!-- Carousel Container -->
-            <div id="carousel-container" class="relative w-[300px] md:w-[350px] h-[550px] flex justify-center items-center pointer-events-none">
-                <!-- Items will be injected here by JS. Note: pointer-events-none on container, auto on items -->
+            <div id="carousel-container" class="relative w-[300px] md:w-[350px] h-[550px] flex justify-center items-center pointer-events-none transform-style-3d">
+                <!-- Items will be injected here by JS -->
             </div>
         </div>
     </section>
@@ -178,7 +180,6 @@
         </div>
         
         <div class="container mx-auto px-6 pb-12">
-            <!-- Changed lg:grid-cols-3 to lg:grid-cols-2 for a 2-column layout -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 justify-items-center" id="video-container">
                 <!-- Videos will be injected here by JS -->
             </div>
@@ -304,51 +305,65 @@
             }
         });
 
-        // --- Carousel Logic ---
+        // --- 3D Circular Carousel Logic ---
         let currentIndex = 0;
         const container = document.getElementById('carousel-container');
 
         function renderCarousel() {
             container.innerHTML = ''; // Clear existing
+            const len = images.length;
             
             images.forEach((img, index) => {
-                // Determine style based on index
+                // Calculate circular distance (Signed distance)
+                // -2, -1, 0, 1, 2, ...
+                let diff = (index - currentIndex) % len;
+                if (diff > len / 2) diff -= len;
+                if (diff < -len / 2) diff += len;
+
+                // Base Styles
                 let className = "carousel-item bg-white rounded-2xl overflow-hidden group pointer-events-auto ";
-                let style = "";
-                let isVisible = false;
+                let transform = "";
+                let opacity = 1;
+                let zIndex = 50;
+                let boxShadow = "";
                 let isActive = false;
 
-                const len = images.length;
-                
-                // Logic to determine prev, current, next (circular)
-                const prevIndex = (currentIndex - 1 + len) % len;
-                const nextIndex = (currentIndex + 1) % len;
-
-                if (index === currentIndex) {
-                    // Active (Center)
-                    className += "scale-100 opacity-100 z-20 translate-x-0 cursor-pointer";
-                    style = `box-shadow: 0 20px 40px -15px rgba(0,0,0,0.3), 0 0 20px 2px ${themeColor};`;
-                    isVisible = true;
+                if (diff === 0) {
+                    // Active Item (Center)
+                    transform = `translateX(0) translateZ(0) rotateY(0)`;
+                    opacity = 1;
+                    zIndex = 100;
+                    boxShadow = `0 20px 40px -15px rgba(0,0,0,0.3), 0 0 20px 2px ${themeColor}`;
+                    className += "cursor-pointer";
                     isActive = true;
-                } else if (index === prevIndex) {
-                    // Left
-                    className += "scale-90 opacity-60 z-10 -translate-x-[60%] blur-[1px] grayscale-[50%]";
-                    style = `box-shadow: 0 10px 20px -10px rgba(0,0,0,0.2);`;
-                    isVisible = true;
-                } else if (index === nextIndex) {
-                    // Right
-                    className += "scale-90 opacity-60 z-10 translate-x-[60%] blur-[1px] grayscale-[50%]";
-                    style = `box-shadow: 0 10px 20px -10px rgba(0,0,0,0.2);`;
-                    isVisible = true;
                 } else {
-                    // Hidden
-                    className += "scale-75 opacity-0 z-0";
+                    // Background Items (3D Effect)
+                    // The further away, the smaller (scale via translateZ), more rotated, and faded
+                    const absDiff = Math.abs(diff);
+                    const direction = diff > 0 ? 1 : -1;
+                    
+                    // Spacing
+                    const xOffset = direction * (50 + (absDiff * 10)) + '%'; // e.g. 60%, 70%
+                    const zOffset = -100 * absDiff + 'px'; // Move back
+                    const rotateY = direction * -15 * absDiff + 'deg'; // Rotate inwards
+                    
+                    transform = `translateX(${xOffset}) translateZ(${zOffset}) rotateY(${rotateY})`;
+                    opacity = Math.max(0, 1 - absDiff * 0.3); // Fade out based on distance
+                    zIndex = 50 - absDiff;
+                    boxShadow = `0 10px 20px -10px rgba(0,0,0,0.2)`;
                 }
+
+                // Optimization: Don't render if too far back/invisible
+                if (opacity <= 0) return;
 
                 // Create Element
                 const div = document.createElement('div');
                 div.className = className;
-                div.style = style;
+                div.style.transform = transform;
+                div.style.opacity = opacity;
+                div.style.zIndex = zIndex;
+                div.style.boxShadow = boxShadow;
+                
                 if (isActive) {
                     div.onclick = () => openLightbox(img);
                 }
@@ -386,7 +401,7 @@
             
             if (Math.abs(distance) > swipeThreshold) {
                 if (distance < 0) {
-                    // Swipe Left -> Next Image (Move finger left means content moves left, next item comes in)
+                    // Swipe Left -> Next Image
                     currentIndex = (currentIndex + 1) % images.length;
                     renderCarousel();
                 } else {
