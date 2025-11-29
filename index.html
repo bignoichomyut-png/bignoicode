@@ -8,8 +8,8 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- LINE Seed Sans TH Font -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/line-seed-sans-th@1.0.0/index.css" />
     
     <!-- Lucide Icons (Replacement for React Lucide) -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -22,7 +22,8 @@
                         theme: '#7AC9C1',
                     },
                     fontFamily: {
-                        sans: ['Sarabun', 'sans-serif'],
+                        // Updated to LINE Seed Sans TH
+                        sans: ['LINE Seed Sans TH', 'sans-serif'],
                     },
                     animation: {
                         blob: "blob 7s infinite",
@@ -69,6 +70,11 @@
             margin: auto;
             width: 320px;
             height: 500px;
+        }
+
+        /* Important for touch handling */
+        #swipe-container {
+            touch-action: pan-y; /* Allow vertical scroll, but let JS handle horizontal */
         }
     </style>
 </head>
@@ -153,7 +159,8 @@
             <p class="text-gray-500">ผลงานที่สร้างสรรค์ด้วย AI</p>
         </div>
 
-        <div class="relative h-[600px] flex items-center justify-center perspective-1000">
+        <!-- Added id="swipe-container" here to catch swipes on the entire area -->
+        <div id="swipe-container" class="relative h-[600px] flex items-center justify-center perspective-1000 w-full touch-pan-y">
             <!-- Nav Buttons -->
             <button id="prevBtn" class="absolute left-4 md:left-20 z-30 p-4 rounded-full bg-white shadow-lg hover:scale-110 transition-transform text-gray-600 hover:text-theme">
                 <i data-lucide="chevron-left" class="w-8 h-8"></i>
@@ -163,8 +170,8 @@
             </button>
 
             <!-- Carousel Container -->
-            <div id="carousel-container" class="relative w-[300px] md:w-[350px] h-[550px] flex justify-center items-center">
-                <!-- Items will be injected here by JS -->
+            <div id="carousel-container" class="relative w-[300px] md:w-[350px] h-[550px] flex justify-center items-center pointer-events-none">
+                <!-- Items will be injected here by JS. Note: pointer-events-none on container, auto on items -->
             </div>
         </div>
     </section>
@@ -312,7 +319,7 @@
             
             images.forEach((img, index) => {
                 // Determine style based on index
-                let className = "carousel-item bg-white rounded-2xl overflow-hidden group ";
+                let className = "carousel-item bg-white rounded-2xl overflow-hidden group pointer-events-auto ";
                 let style = "";
                 let isVisible = false;
                 let isActive = false;
@@ -374,6 +381,37 @@
             currentIndex = (currentIndex + 1) % images.length;
             renderCarousel();
         });
+
+        // --- Touch Swipe Logic (Improved) ---
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const swipeThreshold = 50; // Minimum distance required for a swipe
+        const swipeContainer = document.getElementById('swipe-container');
+
+        swipeContainer.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].clientX; // Use clientX for improved reliability
+        }, { passive: true });
+
+        swipeContainer.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].clientX;
+            handleSwipe();
+        }, { passive: true });
+
+        function handleSwipe() {
+            const distance = touchEndX - touchStartX;
+            
+            if (Math.abs(distance) > swipeThreshold) {
+                if (distance < 0) {
+                    // Swipe Left -> Next Image (Move finger left means content moves left, next item comes in)
+                    currentIndex = (currentIndex + 1) % images.length;
+                    renderCarousel();
+                } else {
+                    // Swipe Right -> Previous Image
+                    currentIndex = (currentIndex - 1 + images.length) % images.length;
+                    renderCarousel();
+                }
+            }
+        }
 
         // Initial Render
         renderCarousel();
